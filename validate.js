@@ -84,9 +84,8 @@ var validate = (function($) {
 
     function defaultValidator(id, pattern) {
         var responseObj = {},
-            textVal = $.trim($('#' + id).val());
-        
-        isValid = regexPatterns[pattern].test(textVal);
+            textVal = $.trim($('#' + id).val()),
+            isValid = regexPatterns[pattern].test(textVal);
 
         /** Cases:
             1: Name value is missing   - type1 error
@@ -124,9 +123,8 @@ var validate = (function($) {
     var exposedMethods = {
         email: function(emailId) {
             var responseObj = {},
-                emailVal = $('#' + emailId).val();
-            
-            isEmailValid = regexPatterns["email"].test($('#' + emailId).val());
+                emailVal = $('#' + emailId).val(),
+                isEmailValid = regexPatterns["email"].test($('#' + emailId).val());
 
             /** Cases:
                 1: Input type Error         - type1 error
@@ -168,9 +166,8 @@ var validate = (function($) {
         },
         name: function(nameId) {
             var responseObj = {},
-                nameVal = $.trim($('#' + nameId).val());
-            
-            isNameValid = regexPatterns["name"].test(nameVal);
+                nameVal = $.trim($('#' + nameId).val()),
+                isNameValid = regexPatterns["name"].test(nameVal);
 
             /** Cases:
                 1: Name value is missing   - type1 error
@@ -208,9 +205,8 @@ var validate = (function($) {
             var responseObj = {},
                 phoneVal = $('#' + phoneId).val(),
                 cleanVal = phoneVal.replace(/["(,),\-,\s"]/g, ""),
-                stateCode = parseInt(cleanVal.slice(0, 3));
-            
-            isPhoneValid = regexPatterns["phone"].test(phoneVal);
+                stateCode = parseInt(cleanVal.slice(0, 3)),
+                isPhoneValid = regexPatterns["phone"].test(phoneVal);
 
             /** Cases:
                 1: Input type Error         - type1 error
@@ -264,10 +260,8 @@ var validate = (function($) {
                 givenDay = cleanVal[1],
                 givenYear = cleanVal[2],
                 leapYearDayAllowed = 0,
-                givenDate = cleanVal[0] + "/" + cleanVal[1] + "/" + cleanVal[2];
-
-            
-            isRegexValid = regexPatterns["dob"].test(dateVal);
+                givenDate = cleanVal[0] + "/" + cleanVal[1] + "/" + cleanVal[2],
+                isRegexValid = regexPatterns["dob"].test(dateVal);
 
             if(isLeapYear && givenMonth === "02") {
                 daysInMonth[1] = 29;
@@ -325,6 +319,37 @@ var validate = (function($) {
         zipcode: function(zipId) {
             return defaultValidator(zipId, "zip");
         },
+        confirm: function confirmValue(param1,param2){
+    var responseObj = {}, value=  $('#' + param1).val(),confValue=  $('#' + param2).val();
+    if ((value =='' || value === null || value === undefined) && (confValue =='' || confValue === null || confValue === undefined)) {
+        return responseObj = {
+                    success: false,
+                    errorType: 2 // "both param1 and param2 are required"
+                }
+    }
+    if(confValue =='' || confValue === null || confValue === undefined) {
+        return responseObj = {
+                    success: false,
+                    errorType: 1 // "param2 is required"
+                }
+    }
+    if(value =='' || value === null || value === undefined) {
+        return responseObj = {
+                    success: false,
+                    errorType: 0 //"param1 is required"
+               }
+    }
+    if(value === confValue){
+       return responseObj = {
+                success: true,
+                errorType: 4 // "status ok"
+              }
+    }
+    return responseObj = {
+        success: false,
+        errorType: -1 // "no match"
+      }
+}
     }
 
     return exposedMethods;
